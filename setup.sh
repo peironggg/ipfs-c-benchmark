@@ -22,9 +22,10 @@ autoconf
 make
 sudo make install
 
-# Set filebench path and disable randomize_va_space
+# Set filebench path
 echo "export PATH=""/usr/local/lib/:$PATH" >> ~/.profile
 source ~/.profile
+# Disable randomize_va_space
 sudo sysctl -w kernel.randomize_va_space=0
 
 cd $WORK_DIR
@@ -38,7 +39,7 @@ sudo bash install.sh
 cd $WORK_DIR
 rm kubo*
 
-Setup IPFS private network
+# Setup IPFS private network
 ipfs init
 ipfs bootstrap rm --all
 

@@ -14,7 +14,6 @@ int main(void)
 
   if (curl)
   {
-    struct curl_header *header;
     char *url = (char *)malloc(100 * sizeof(char));
     sprintf(url, "http://localhost:5001/api/v0/files/mv?arg=%s&arg=%s", "/setup.sh", "/first/second");
 
