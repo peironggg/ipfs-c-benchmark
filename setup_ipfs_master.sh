@@ -7,11 +7,13 @@ cd $WORK_DIR
 # Install libcurl for client HTTP requests
 sudo apt-get install libcurl4-openssl-dev
 
-# Clone own forked version of filebench
-git clone https://github.com/peironggg/filebench.git
-cd filebench
+# Clone own forked version of filebench_ipfs and filebench
+git clone https://github.com/peironggg/filebench_ipfs.git
+git clone https://github.com/filebench/filebench.git
 
-# Setup filebench
+# Setup filebench_ipfs
+cd $WORK_DIR/filebench_ipfs
+
 libtoolize
 aclocal
 autoheader
@@ -20,11 +22,19 @@ autoconf
 
 ./configure
 make
-sudo make install
 
-# Set filebench path
-echo "export PATH=""/usr/local/lib/:$PATH" >> ~/.profile
-source ~/.profile
+# Setup filebench
+cd $WORK_DIR/filebench
+
+libtoolize
+aclocal
+autoheader
+automake --add-missing
+autoconf
+
+./configure
+make
+
 # Disable randomize_va_space
 sudo sysctl -w kernel.randomize_va_space=0
 
