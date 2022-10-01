@@ -37,20 +37,26 @@ cd kubo
 sudo bash install.sh
 
 cd $WORK_DIR
-rm kubo*
+rm -rf kubo*
 
 # Setup IPFS private network
 ipfs init
 ipfs bootstrap rm --all
 
-# Create swarm key
-randomKey=`tr -dc 'a-f0-9' < /dev/urandom | head -c64`
-printf "/key/swarm/psk/1.0.0/\n/base16/\n${randomKey}" > ~/.ipfs/swarm.key
+# Create swarm key if does not exist
+if [ ! -f ~/.ipfs/swarm.key ]; then
+  randomKey=`tr -dc 'a-f0-9' < /dev/urandom | head -c64`
+  printf "/key/swarm/psk/1.0.0/\n/base16/\n${randomKey}" > ~/.ipfs/swarm.key
+fi
 
 # Grab peer ID of node
 peerID=`ipfs id | grep 'ID' | cut -d':' -f2 | cut -d'"' -f2`
 ipfs bootstrap add /ip4/10.10.1.1/tcp/4001/ipfs/${peerID}
 
+# Disable local caching
+ipfs config Datestore.StorageGCWatermark 0
+ipfs config Datestore.StorageMax 0GB
+
 bash -c "export LIBP2P_FORCE_PNET=1"
 
-ipfs daemon
+ipfs daemon --enable-gc
