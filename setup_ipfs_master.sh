@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 WORK_DIR=~
 
@@ -7,33 +7,23 @@ cd $WORK_DIR
 # Install libcurl for client HTTP requests
 sudo apt-get install libcurl4-openssl-dev
 
-# Clone own forked version of filebench_ipfs and filebench
-git clone https://github.com/peironggg/filebench_ipfs.git
-git clone https://github.com/filebench/filebench.git
+# Clone and install own forked version of filebench_ipfs and filebench
+filebench_links=("https://github.com/peironggg/filebench_ipfs.git" "https://github.com/filebench/filebench.git")
 
-# Setup filebench_ipfs
-cd $WORK_DIR/filebench_ipfs
+for link in ${$filebench_links[@]}; do
+  git clone $link
+  repo_name=echo $link | cut -d'/' -f5 | cut -d'.' -f1
+  cd $WORK_DIR/$repo_name
 
-libtoolize
-aclocal
-autoheader
-automake --add-missing
-autoconf
+  libtoolize
+  aclocal
+  autoheader
+  automake --add-missing
+  autoconf
 
-./configure
-make
-
-# Setup filebench
-cd $WORK_DIR/filebench
-
-libtoolize
-aclocal
-autoheader
-automake --add-missing
-autoconf
-
-./configure
-make
+  ./configure
+  make
+done
 
 # Disable randomize_va_space
 sudo sysctl -w kernel.randomize_va_space=0
