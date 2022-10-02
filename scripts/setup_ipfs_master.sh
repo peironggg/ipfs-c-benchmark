@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Usage: ./setup_ipfs_master.sh
+
 WORK_DIR=~
 
 cd $WORK_DIR

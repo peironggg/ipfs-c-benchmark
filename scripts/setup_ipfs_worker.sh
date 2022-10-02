@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Usage: ./setup_ipfs_worker.sh <master node peerID>
+# This script should be called on the worker node but
+# it is easier to call deploy_ipfs.sh on the master node instead.
+
 WORK_DIR=~
 
 cd $WORK_DIR
@@ -18,8 +22,8 @@ ipfs init
 ipfs bootstrap rm --all
 
 # Fetch swarm key from master
-scp peirong3@10.10.1.1:~/.ipfs/swarm.key ~/.ipfs
-ipfs bootstrap add /ip4/10.10.1.1/tcp/4001/ipfs/12D3KooWSzjdTDMXepEdUswqoS36Gzdq33CEeQrXFMcwuvp1vwWn
+scp 10.10.1.1:~/.ipfs/swarm.key ~/.ipfs
+ipfs bootstrap add /ip4/10.10.1.1/tcp/4001/ipfs/$1
 
 # Disable local caching
 ipfs config Datestore.StorageGCWatermark 0
